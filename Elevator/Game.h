@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "SDL.h"
 #include <iostream>
+#include "Mouse.h"
 
 using namespace std;
 
@@ -38,7 +39,7 @@ public:
 	{
 		frames++;
 		imgDestR.x++;
-		cout << frames << endl;
+		Mouse::update();
 	}
 	
 	void render()
