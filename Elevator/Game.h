@@ -13,6 +13,7 @@ class Game
 
 	SDL_Texture* HarnoldIMG;
 	GameObject Harnold;
+	GameObject Harnold2;
 
 public:
 	
@@ -50,6 +51,7 @@ public:
 	{
 		SDL_RenderClear(Window::renderer);
 		Harnold.render();
+		Window::drawString(0, 0, "Test");
 		SDL_RenderPresent(Window::renderer);
 	}
 
