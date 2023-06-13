@@ -136,6 +136,7 @@
     <ClCompile Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Mouse.h" />

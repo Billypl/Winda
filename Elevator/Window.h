@@ -7,14 +7,48 @@ using namespace std;
 
 class Window
 {
-
 public:
 	
 	static const int WIDTH;
 	static const int HEIGHT;
 	static SDL_Window* window;
 	static SDL_Renderer* renderer;
-	static SDL_Texture* charset;
+
+	class Text
+	{
+	public:
+
+		static SDL_Texture* charset;
+		static const int BMP_LETTER_SIZE;
+		static const int LETTER_SIZE;
+
+		static void drawString(int x, int y, const char* text)
+		{
+			int c;
+			SDL_Rect src, dest;
+			src.w = BMP_LETTER_SIZE;
+			src.h = BMP_LETTER_SIZE;
+			dest.w = LETTER_SIZE;
+			dest.h = LETTER_SIZE;
+
+			// text is pointer to the first letter in string
+			while (*text != '\0')
+			{
+				// calculate letter position on bitmap
+				c = *text & 255;
+				src.x = (c % (2 * BMP_LETTER_SIZE)) * BMP_LETTER_SIZE;
+				src.y = (c / (2 * BMP_LETTER_SIZE)) * BMP_LETTER_SIZE;
+
+				// render letter
+				dest.x = x;
+				dest.y = y;
+				SDL_RenderCopy(renderer, charset, &src, &dest);
+				x += LETTER_SIZE;
+				text++;
+			}
+		}
+
+	};
 
 	static void init(const string& title, SDL_Rect screenR, bool fullscreen)
 	{
@@ -22,7 +56,6 @@ public:
 
 		window = SDL_CreateWindow(title.c_str(), screenR.x, screenR.y, screenR.w, screenR.h, SDL_WINDOW_SHOWN);
 		renderer = SDL_CreateRenderer(window, -1, 0);
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 		// setting text 
 		SDL_Surface* charsetSurf = IMG_Load("assets/cs8x8.bmp");
@@ -30,9 +63,14 @@ public:
 		//SDL_SetColorKey(charsetSurf, true, 0x000000);
 		// odkomentować dla zmiany koloru tekstu 
 		//SDL_SetSurfaceColorMod(charsetSurf, 255, 0, 0);
-		charset = SDL_CreateTextureFromSurface(renderer, charsetSurf);
+		Text::charset = SDL_CreateTextureFromSurface(renderer, charsetSurf);
 		SDL_FreeSurface(charsetSurf);
 
+	}
+
+	static void setDefaultBackgroundColor()
+	{
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	}
 
 	static SDL_Texture* loadIMG(std::string filename)
@@ -49,33 +87,15 @@ public:
 		return tmp;
 	}
 
-	static void drawString(int x, int y, const char* text)
+	
+
+	static void drawRect(SDL_Rect rect, int r, int g, int b)
 	{
-		const int BMP_LETTER_SIZE = 8;
-		const int LETTER_SIZE = 16;
-
-		int c;
-		SDL_Rect src, dest;
-		src.w = BMP_LETTER_SIZE;
-		src.h = BMP_LETTER_SIZE;
-		dest.w = LETTER_SIZE;
-		dest.h = LETTER_SIZE;
-		
-		// text is pointer to the first letter in string
-		while (*text != '\0')
-		{
-			// calculate letter position on bitmap
-			c = *text & 255;
-			src.x = (c % (2 * BMP_LETTER_SIZE)) * BMP_LETTER_SIZE;
-			src.y = (c / (2 * BMP_LETTER_SIZE)) * BMP_LETTER_SIZE;
-
-			// render letter
-			dest.x = x;
-			dest.y = y;
-			SDL_RenderCopy(renderer, charset, &src, &dest);
-			x += LETTER_SIZE;
-			text++;
-		}
+		SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+		SDL_RenderFillRect(renderer, &rect);
+		Window::setDefaultBackgroundColor();
 	}
+
+
 };
 

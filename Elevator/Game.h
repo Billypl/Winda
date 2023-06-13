@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Mouse.h"
 #include "GameObject.h"
+#include "Button.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ class Game
 	SDL_Texture* HarnoldIMG;
 	GameObject Harnold;
 	GameObject Harnold2;
+	Button btn;
 
 public:
 	
@@ -23,6 +25,7 @@ public:
 		Window::init(title, screenR, fullscreen);
 		HarnoldIMG = Window::loadIMG("assets/Harnold.jpg");
 		Harnold.set(HarnoldIMG, Window::createRect(0, 0, 128, 128));
+		btn.text = "test";
 	}
 
 	void handleEvents()
@@ -44,6 +47,7 @@ public:
 	{
 		frames++;
 		Harnold.rect.x++;
+		btn.update();
 		Mouse::update();
 	}
 	
@@ -51,7 +55,8 @@ public:
 	{
 		SDL_RenderClear(Window::renderer);
 		Harnold.render();
-		Window::drawString(0, 0, "Test");
+		
+		btn.render();
 		SDL_RenderPresent(Window::renderer);
 	}
 
