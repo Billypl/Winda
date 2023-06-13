@@ -8,9 +8,7 @@ using namespace std;
 
 int main(int argc, char* args[])
 {
-	Game game;
-	game.init("title", Window::createRect(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Window::WIDTH, Window::HEIGHT), false);
-
+	Game game("title", Window::createRect(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Window::WIDTH, Window::HEIGHT), false);
 	while (game.isRunning)
 	{
 		game.handleEvents();

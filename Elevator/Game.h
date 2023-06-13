@@ -4,22 +4,26 @@
 #include "SDL.h"
 #include <iostream>
 #include "Mouse.h"
+#include "GameObject.h"
 
 using namespace std;
 
 class Game
 {
 
-	SDL_Rect imgDestR = Window::createRect(0, 0, 128, 128);
-
+	SDL_Texture* HarnoldIMG;
+	GameObject Harnold;
 
 public:
 	
-	void init(const string& title, SDL_Rect screenR, bool fullscreen)
+	Game(const string& title, SDL_Rect screenR, bool fullscreen)
 	{
 		SDL_Init(SDL_INIT_EVERYTHING);
 		Window::init(title, screenR, fullscreen);
+		HarnoldIMG = Window::loadIMG("assets/Harnold.jpg");
+		Harnold.set(HarnoldIMG, Window::createRect(0, 0, 128, 128));
 	}
+
 	void handleEvents()
 	{
 		SDL_Event event;
@@ -38,19 +42,15 @@ public:
 	void update()
 	{
 		frames++;
-		imgDestR.x++;
+		Harnold.rect.x++;
 		Mouse::update();
 	}
 	
 	void render()
 	{
 		SDL_RenderClear(Window::renderer);
-
-		SDL_Texture* s = Window::loadIMG("assets/Harnold.jpg");
-		SDL_RenderCopy(Window::renderer, s, NULL, &imgDestR);
-
+		Harnold.render();
 		SDL_RenderPresent(Window::renderer);
-
 	}
 
 	void clean()
