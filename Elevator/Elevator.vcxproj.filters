@@ -24,7 +24,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mouse.cpp">
+    <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,13 +32,13 @@
     <ClInclude Include="Game.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

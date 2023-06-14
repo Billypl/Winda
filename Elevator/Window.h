@@ -60,7 +60,7 @@ public:
 		// setting text 
 		SDL_Surface* charsetSurf = IMG_Load("assets/cs8x8.bmp");
 		// odkomentować dla przeźroczystego tła literek
-		//SDL_SetColorKey(charsetSurf, true, 0x000000);
+		SDL_SetColorKey(charsetSurf, true, 0x000000);
 		// odkomentować dla zmiany koloru tekstu 
 		//SDL_SetSurfaceColorMod(charsetSurf, 255, 0, 0);
 		Text::charset = SDL_CreateTextureFromSurface(renderer, charsetSurf);

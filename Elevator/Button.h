@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include <string>
 #include "Window.h"
+#include "Input.h"
 
 using namespace std;
 
@@ -19,8 +20,9 @@ public:
 	const int b_hover = 0;
 
 	string text;
-	SDL_Rect rect = {0,0, 100,100};
+	SDL_Rect rect = {0,0, 36,36};
 	bool isHovering = false;
+	void (*callback) ();
 
 	void render()
 	{
@@ -34,6 +36,12 @@ public:
 		}
 	}
 
+	void setPos(int x, int y)
+	{
+		rect.x = x;
+		rect.y = y;
+	}
+
 	void render(int r, int g, int b)
 	{
 		Window::drawRect(rect, r, g, b);
@@ -44,8 +52,12 @@ public:
 
 	void update()
 	{
-		isHovering = SDL_HasIntersection(&rect, &Mouse::point);
+		isHovering = SDL_PointInRect(&Input::Mouse::point, &rect);
+		if (isHovering && Input::Mouse::buttonUp)
+		{
+			callback();
+		}
 	}
 
-
+	
 };

@@ -3,9 +3,9 @@
 #include "Window.h"
 #include "SDL.h"
 #include <iostream>
-#include "Mouse.h"
-#include "GameObject.h"
 #include "Button.h"
+#include "Input.h"
+#include "GameObject.h"
 
 using namespace std;
 
@@ -25,30 +25,23 @@ public:
 		Window::init(title, screenR, fullscreen);
 		HarnoldIMG = Window::loadIMG("assets/Harnold.jpg");
 		Harnold.set(HarnoldIMG, Window::createRect(0, 0, 128, 128));
-		btn.text = "test";
+		btn.text = "1";
+		btn.setPos(50, 50);
+		btn.callback = []() {cout << "Button clicked!\n"; };
 	}
 
 	void handleEvents()
 	{
-		SDL_Event event;
-		SDL_PollEvent(&event);
-		switch (event.type)
+		if (Input::update() == false)
 		{
-		case SDL_QUIT:
 			isRunning = false;
-			break;
-
-		default:
-			break;
 		}
-
 	}
 	void update()
 	{
 		frames++;
 		Harnold.rect.x++;
 		btn.update();
-		Mouse::update();
 	}
 	
 	void render()
