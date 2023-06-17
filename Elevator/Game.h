@@ -19,12 +19,17 @@ class Game
 
 public:
 	
+	bool isRunning = true;
+	int frames = 0;
+
 	Game(const string& title, SDL_Rect screenR, bool fullscreen)
 	{
 		SDL_Init(SDL_INIT_EVERYTHING);
 		Window::init(title, screenR, fullscreen);
+
 		HarnoldIMG = Window::loadIMG("assets/Harnold.jpg");
 		Harnold.set(HarnoldIMG, Window::createRect(0, 0, 128, 128));
+		
 		btn.text = "1";
 		btn.setPos(50, 50);
 		btn.callback = []() {cout << "Button clicked!\n"; };
@@ -59,8 +64,5 @@ public:
 		SDL_DestroyRenderer(Window::renderer);
 		SDL_Quit();
 	}
-
-	bool isRunning = true;
-	int frames = 0;
 
 };

@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>E:\Billy\Pulpit\Uczelnia\Korepetycje\Mateusz Cekała\Korki_3%28winda%29\Elevator\SDL2_image\include;E:\Billy\Pulpit\Uczelnia\Korepetycje\Mateusz Cekała\Korki_3%28winda%29\Elevator\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

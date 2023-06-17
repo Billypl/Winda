@@ -24,6 +24,9 @@ public:
 	bool isHovering = false;
 	void (*callback) ();
 
+	int srcFloor;
+	int dstFloor;
+
 	void render()
 	{
 		if (isHovering)
@@ -40,6 +43,15 @@ public:
 	{
 		rect.x = x;
 		rect.y = y;
+	}
+
+	void set(const string& text, int x, int y, int srcFloor, int dstFloor)
+	{
+		this->text = text;
+		this->rect.x = x;
+		this->rect.y = y;
+		this->srcFloor = srcFloor;
+		this->dstFloor = dstFloor;
 	}
 
 	void render(int r, int g, int b)
