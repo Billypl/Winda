@@ -158,6 +158,7 @@ public:
 		Window::drawRect(rect, 0, 0, 255);
 		// PEOPLE
 		renderPeopleWaiting();
+		renderPeopleInElevator(rect, peopleInElevator.size());
 		// GENERAL INFO LOG
 		renderInfo();
 	}
@@ -176,6 +177,45 @@ private:
 			Window::drawRect(personRect, 255, 0, 0);
 			SDL_Point centred = Window::Text::getCenteredTextPoint(personRect, to_string(peopleWaiting[i].dstFloor));
 			Window::Text::drawString(centred.x, centred.y, to_string(peopleWaiting[i].dstFloor).c_str());
+		}
+	}
+
+	void renderPeopleInElevator(SDL_Rect square, int n)
+	{
+		// collision when wants to render and update at the same time
+		if (n == 0)
+		{
+			return;
+		}
+		square = Window::generatePaddingRect(square, 2, 2);
+
+		int rectWidth = square.w / ceil(sqrt(n));
+		int rectHeight = square.h / ceil(sqrt(n));
+		// min to prevent squares from taking all the space
+		rectWidth = min(rectWidth, square.w / 3);
+		rectHeight = min(rectHeight, square.h / 3);
+
+		int rectsPerRow = square.w / rectWidth;
+		int rectsPerCol = square.h / rectHeight;
+
+		int k = 0;
+		for (int i = 0; i < rectsPerCol; i++)
+		{
+			for (int j = 0; j < rectsPerRow; j++)
+			{
+				if (k > n - 1)
+				{
+					return;
+				}
+				Person& person = peopleInElevator[k];
+				int rectX = square.x + (j * rectWidth);
+				int rectY = square.y + (i * rectHeight);
+				person.rect = { rectX, rectY, rectWidth, rectHeight };
+				Window::drawRect(person.rect, 255, 0, 0);
+				SDL_Point centered = Window::Text::getCenteredTextPoint(person.rect, to_string(person.dstFloor));
+				Window::Text::drawString(centered.x, centered.y, to_string(person.dstFloor).c_str());
+				k++;
+			}
 		}
 	}
 
