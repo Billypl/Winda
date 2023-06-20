@@ -158,7 +158,8 @@ public:
 		Window::drawRect(rect, 0, 0, 255);
 		// PEOPLE
 		renderPeopleWaiting();
-
+		// GENERAL INFO LOG
+		renderInfo();
 	}
 
 private:
@@ -177,6 +178,21 @@ private:
 			Window::Text::drawString(centred.x, centred.y, to_string(peopleWaiting[i].dstFloor).c_str());
 		}
 	}
+
+	void renderInfo()
+	{
+		Window::drawRect(infoRect, 0, 0, 255);
+
+		string weightInfo = "WEIGHT: " + to_string(peopleInElevator.size() * Person::WEIGHT);
+		SDL_Point centeredWeightInfo = Window::Text::getCenteredTextPoint(infoRect, weightInfo);
+		Window::Text::drawString(centeredWeightInfo.x, centeredWeightInfo.y - Window::Text::LETTER_SIZE, weightInfo.c_str());
+
+		string floorInfo = "FLOOR: " + to_string(currentFloor);
+		SDL_Point centeredFloorInfo = Window::Text::getCenteredTextPoint(infoRect, floorInfo);
+		Window::Text::drawString(centeredFloorInfo.x, centeredWeightInfo.y + Window::Text::LETTER_SIZE, floorInfo.c_str());
+	}
+
+
 
 	void printDebug()
 	{
