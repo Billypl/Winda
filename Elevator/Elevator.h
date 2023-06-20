@@ -46,7 +46,7 @@ class Elevator
 	const int MAX_TIME_SPENT_ON_EMPTY_FLOOR = 5;
 	int timeSpentOnEmptyFloor = 0;
 
-	Elevator() 
+	Elevator()
 	{
 		rect = startingRect;
 		timerStart = chrono::steady_clock::now();
@@ -63,8 +63,9 @@ public:
 	vector<Person> peopleInElevator;
 	vector<Person> peopleWaiting;
 	const SDL_Rect startingRect = { 300,80,100,100 };
+	const SDL_Rect infoRect = { 0,0,200,100 };
 
-	
+
 	Elevator(Elevator const&) = delete;
 	void operator=(Elevator const&) = delete;
 
@@ -154,10 +155,28 @@ public:
 		Window::drawRect(shaftRect, 0, 255, 0);
 		// ELEVATOR CAR
 		rect.y = startingRect.y + rect.h * (NUMBER_OF_FLOORS - currentFloor - 1);
-		Window::drawRect(rect, 0,0,255);
+		Window::drawRect(rect, 0, 0, 255);
+		// PEOPLE
+		renderPeopleWaiting();
+
 	}
 
 private:
+
+	void renderPeopleWaiting()
+	{
+		SDL_Rect personRect = { startingRect.x + startingRect.w + 10, startingRect.y, 30,30 };
+		map<int, int> offset;
+		for (int i = 0; i < peopleWaiting.size(); i++)
+		{
+			offset[peopleWaiting[i].srcFloor]++;
+			personRect.y = startingRect.y + (NUMBER_OF_FLOORS - peopleWaiting[i].srcFloor) * rect.h - personRect.h;
+			personRect.x = startingRect.x + startingRect.w + 10 + (personRect.w + 1) * offset[peopleWaiting[i].srcFloor];
+			Window::drawRect(personRect, 255, 0, 0);
+			SDL_Point centred = Window::Text::getCenteredTextPoint(personRect, to_string(peopleWaiting[i].dstFloor));
+			Window::Text::drawString(centred.x, centred.y, to_string(peopleWaiting[i].dstFloor).c_str());
+		}
+	}
 
 	void printDebug()
 	{
@@ -170,7 +189,7 @@ private:
 		}
 		cout << "-------\n";
 		cout << "CF: " << currentFloor << endl;
-		for (const Person &person : peopleInElevator)
+		for (const Person& person : peopleInElevator)
 			cout << person.ID << ", ";
 		cout << "\nPE^ , PWv\n";
 		for (const Person& person : peopleWaiting)
