@@ -48,6 +48,14 @@ public:
 			}
 		}
 
+		static SDL_Point getCenteredTextPoint(SDL_Rect rect, const string& text)
+		{
+			int x = rect.x + rect.w / 2 - text.length() *LETTER_SIZE / 2;
+			int y = rect.y + rect.h / 2 - LETTER_SIZE / 2;
+			SDL_Point centered = {x,y};
+			return centered;
+		}
+
 	};
 
 	static void init(const string& title, SDL_Rect screenR, bool fullscreen)
@@ -87,8 +95,6 @@ public:
 		return tmp;
 	}
 
-	
-
 	static void drawRect(SDL_Rect rect, int r, int g, int b)
 	{
 		SDL_SetRenderDrawColor(renderer, r, g, b, 255);
@@ -96,6 +102,14 @@ public:
 		Window::setDefaultBackgroundColor();
 	}
 
+	static SDL_Rect generatePaddingRect(SDL_Rect rect, int horizontal, int vertical)
+	{
+		rect.x += horizontal;
+		rect.y += vertical;
+		rect.w -= horizontal * 2;
+		rect.h -= vertical * 2;
+		return rect;
+	}
 
 };
 

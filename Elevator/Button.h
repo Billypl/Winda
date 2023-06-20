@@ -3,6 +3,7 @@
 #include <string>
 #include "Window.h"
 #include "Input.h"
+#include "Elevator.h"
 
 using namespace std;
 
@@ -22,7 +23,6 @@ public:
 	string text;
 	SDL_Rect rect = {0,0, 36,36};
 	bool isHovering = false;
-	void (*callback) ();
 
 	int srcFloor;
 	int dstFloor;
@@ -65,9 +65,10 @@ public:
 	void update()
 	{
 		isHovering = SDL_PointInRect(&Input::Mouse::point, &rect);
-		if (isHovering && Input::Mouse::buttonUp)
+		bool isClicked = isHovering && Input::Mouse::buttonUp;
+		if (isClicked)
 		{
-			callback();
+			Elevator::get().peopleWaiting.push_back(Person(srcFloor, dstFloor));
 		}
 	}
 

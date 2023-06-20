@@ -6,16 +6,14 @@
 #include "Button.h"
 #include "Input.h"
 #include "GameObject.h"
+#include "Elevator.h"
 
 using namespace std;
 
 class Game
 {
 
-	SDL_Texture* HarnoldIMG;
-	GameObject Harnold;
-	GameObject Harnold2;
-	Button btn;
+	vector<Button> buttons;
 
 public:
 	
@@ -27,12 +25,35 @@ public:
 		SDL_Init(SDL_INIT_EVERYTHING);
 		Window::init(title, screenR, fullscreen);
 
-		HarnoldIMG = Window::loadIMG("assets/Harnold.jpg");
-		Harnold.set(HarnoldIMG, Window::createRect(0, 0, 128, 128));
-		
-		btn.text = "1";
-		btn.setPos(50, 50);
-		btn.callback = []() {cout << "Button clicked!\n"; };
+		generateButtons();
+	}
+
+	void generateButtons()
+	{
+		const int btnSize = 36;
+		const int btnColumnStartingX = 20;
+		int btnColumnY = Elevator::get().rect.h + Elevator::get().startingRect.y - btnSize;
+		int btnColumnX = btnColumnStartingX;
+		for (int i = 0; i < Elevator::get().NUMBER_OF_FLOORS; i++)
+		{
+			for (int j = 0; j < Elevator::get().NUMBER_OF_FLOORS; j++)
+			{
+				if (i != j)
+				{
+					Button btn;
+					btnColumnX += btn.rect.w + 1;
+					btn.setPos(btnColumnX, btnColumnY);
+					btn.rect.h = btnSize;
+					btn.rect.w = btnSize;
+					btn.srcFloor = Elevator::get().NUMBER_OF_FLOORS - i - 1;
+					btn.dstFloor = Elevator::get().NUMBER_OF_FLOORS - j - 1;
+					btn.text = to_string(Elevator::get().NUMBER_OF_FLOORS - j - 1);
+					buttons.push_back(btn);
+				}
+			}
+			btnColumnY += Elevator::get().startingRect.h;
+			btnColumnX = btnColumnStartingX;
+		}
 	}
 
 	void handleEvents()
@@ -45,16 +66,22 @@ public:
 	void update()
 	{
 		frames++;
-		Harnold.rect.x++;
-		btn.update();
+		Elevator::get().update();
+		for (Button &button : buttons)
+		{
+			button.update();
+		}
 	}
 	
 	void render()
 	{
 		SDL_RenderClear(Window::renderer);
-		Harnold.render();
-		
-		btn.render();
+		Elevator::get().render();
+
+		for (Button &button : buttons)
+		{
+			button.render();
+		}
 		SDL_RenderPresent(Window::renderer);
 	}
 
