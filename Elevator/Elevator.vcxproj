@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

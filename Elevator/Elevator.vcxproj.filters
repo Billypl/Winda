@@ -38,9 +38,6 @@
     <ClInclude Include="Game.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Source Files</Filter>
     </ClInclude>

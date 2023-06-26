@@ -8,13 +8,10 @@
 
 using namespace std;
 
-
-
-
 int main(int argc, char* args[])
 {
-
-	Game game("Elevator", Window::createRect(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Window::WIDTH, Window::HEIGHT), false);
+	SDL_Rect windowRect = { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Window::WIDTH, Window::HEIGHT };
+	Game game("Elevator", windowRect);
 	while (game.isRunning)
 	{
 		game.handleEvents();
@@ -22,23 +19,6 @@ int main(int argc, char* args[])
 		game.render();
 	}
 	game.clean();
-
-
-
-	//Elevator &elevator = Elevator::get();
-	//elevator.init();
-	//elevator.currentFloor = 2;
-	////elevator.peopleWaiting.push_back(Person(1, 2));
-	////elevator.peopleWaiting.push_back(Person(3, 1));
-	////elevator.peopleWaiting.push_back(Person(2, 5));
-	////elevator.peopleWaiting.push_back(Person(2, 5));
-	//elevator.peopleWaiting.push_back(Person(3, 5));
-	//elevator.peopleWaiting.push_back(Person(1, 5));
-	//
-	//while (true)
-	//{
-	//	elevator.update();
-	//}
 
 	return 0;
 }

@@ -5,7 +5,6 @@
 #include <iostream>
 #include "Button.h"
 #include "Input.h"
-#include "GameObject.h"
 #include "Elevator.h"
 
 using namespace std;
@@ -18,41 +17,43 @@ class Game
 public:
 	
 	bool isRunning = true;
-	int frames = 0;
 
-	Game(const string& title, SDL_Rect screenR, bool fullscreen)
+	Game(const string& title, SDL_Rect screenR)
 	{
 		SDL_Init(SDL_INIT_EVERYTHING);
-		Window::init(title, screenR, fullscreen);
+		Window::init(title, screenR);
 
 		generateButtons();
 	}
 
 	void generateButtons()
 	{
-		const int btnSize = 36;
-		const int btnColumnStartingX = 20;
-		int btnColumnY = Elevator::get().rect.h + Elevator::get().startingRect.y - btnSize;
-		int btnColumnX = btnColumnStartingX;
-		for (int i = 0; i < Elevator::get().NUMBER_OF_FLOORS; i++)
+		const int BUTTON_SIZE = 36;
+		const int BUTTON_COLUMN_STARTING_X = 20;
+		const int BUTTON_MARGIN_X = 1;
+
+		int btnColumnY = Elevator::get().elevatorCarRect.h + Elevator::get().startingRect.y - BUTTON_SIZE;
+		int btnColumnX = BUTTON_COLUMN_STARTING_X;
+		// i - row (starting form the top floor)
+		// j - column (printing all of the other possible floors)
+		for (int i = Elevator::get().NUMBER_OF_FLOORS - 1; i >= 0; i--)
 		{
 			for (int j = 0; j < Elevator::get().NUMBER_OF_FLOORS; j++)
 			{
-				if (i != j)
+				if (i != j) // don't generate buttons to the same floor
 				{
+					btnColumnX += BUTTON_SIZE + BUTTON_MARGIN_X;
+					
 					Button btn;
-					btnColumnX += btn.rect.w + 1;
-					btn.setPos(btnColumnX, btnColumnY);
-					btn.rect.h = btnSize;
-					btn.rect.w = btnSize;
-					btn.srcFloor = Elevator::get().NUMBER_OF_FLOORS - i - 1;
-					btn.dstFloor = Elevator::get().NUMBER_OF_FLOORS - j - 1;
-					btn.text = to_string(Elevator::get().NUMBER_OF_FLOORS - j - 1);
+					btn.rect = { btnColumnX, btnColumnY, BUTTON_SIZE, BUTTON_SIZE };
+					btn.srcFloor = i;
+					btn.dstFloor = j;
+					btn.text = to_string(btn.dstFloor);
 					buttons.push_back(btn);
 				}
 			}
 			btnColumnY += Elevator::get().startingRect.h;
-			btnColumnX = btnColumnStartingX;
+			btnColumnX = BUTTON_COLUMN_STARTING_X;
 		}
 	}
 
@@ -65,7 +66,6 @@ public:
 	}
 	void update()
 	{
-		frames++;
 		Elevator::get().update();
 		for (Button &button : buttons)
 		{
@@ -77,7 +77,6 @@ public:
 	{
 		SDL_RenderClear(Window::renderer);
 		Elevator::get().render();
-
 		for (Button &button : buttons)
 		{
 			button.render();

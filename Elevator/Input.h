@@ -20,8 +20,6 @@ public:
 		{
 			buttonUp = false;
 			SDL_GetMouseState(&point.x, &point.y);
-			// DEBUG
-			//std::cout << point.x << " : " << point.y << std::endl;
 		}
 
 	};
